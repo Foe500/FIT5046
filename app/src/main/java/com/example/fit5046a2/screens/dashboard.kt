@@ -120,7 +120,6 @@ fun DashboardPreview() {
     FIT5046A2Theme {
         DashboardScreen(
             onNavigateToHistory = {
-                // 什么都不做，只是为了预览
             }
         )
     }
