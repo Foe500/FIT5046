@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.fit5046a2.MainScreen
 import com.example.fit5046a2.screens.DashboardScreen
 import com.example.fit5046a2.screens.HistoryScreen
 import com.example.fit5046a2.screens.LoginScreen
@@ -46,27 +47,25 @@ fun CardioGuardNavGraph(
         }
 
         composable(NavRoutes.DASHBOARD) {
-            DashboardScreen(
-                onNavigateToHistory = {
-                    navController.navigate(NavRoutes.HISTORY)
-                }
-            )
+            MainScreen()
         }
 
-        composable(NavRoutes.HISTORY) {
-            HistoryScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                }
-            )
-        }
-
-        composable(NavRoutes.SETTINGS) {
-            SettingsScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                }
-            )
-        }
+//        composable(NavRoutes.HISTORY) {
+//            HistoryScreen(
+//                onBackClick = {
+//                    navController.popBackStack()
+//                }
+//            )
+//        }
+//
+//        composable(NavRoutes.SETTINGS) {
+//            SettingsScreen(
+//                onBackClick = {
+//                    navController.popBackStack()
+//                }
+//            )
+//        }
     }
 }
+
+
