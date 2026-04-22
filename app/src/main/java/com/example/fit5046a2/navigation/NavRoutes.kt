@@ -17,13 +17,13 @@ fun CardioGuardNavGraph(
         startDestination = NavRoutes.LOGIN // App 启动时首先进入登录页
     ) {
         composable(NavRoutes.LOGIN) {
-            // 稍后我们会在这里填充 LoginScreen
+            // LoginScreen
         }
         composable(NavRoutes.REGISTER) {
-            // 稍后填充 RegisterScreen
+            //  RegisterScreen
         }
         composable(NavRoutes.DASHBOARD) {
-            // 稍后填充 DashboardScreen
+            // DashboardScreen
             DashboardScreen(
                 onNavigateToHistory = {
                     navController.navigate(NavRoutes.HISTORY)
@@ -31,7 +31,7 @@ fun CardioGuardNavGraph(
             )
         }
         composable(NavRoutes.HISTORY) {
-            // 稍后填充 HistoryScreen
+            //  HistoryScreen
         }
     }
 }
