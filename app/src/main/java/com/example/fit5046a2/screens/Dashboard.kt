@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.fit5046a2.Greeting
 import com.example.fit5046a2.ui.theme.FIT5046A2Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,7 +112,6 @@ fun HeartRateChart() {
     }
 }
 
-@Preview(showBackground = true)
 @Preview(showBackground = true)
 @Composable
 fun DashboardPreview() {

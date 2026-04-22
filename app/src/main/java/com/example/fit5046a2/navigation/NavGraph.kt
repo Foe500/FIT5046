@@ -6,32 +6,67 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.fit5046a2.screens.DashboardScreen
+import com.example.fit5046a2.screens.HistoryScreen
+import com.example.fit5046a2.screens.LoginScreen
+import com.example.fit5046a2.screens.RegisterScreen
+import com.example.fit5046a2.screens.SettingsScreen
 
 
 @Composable
 fun CardioGuardNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    startDestination: String = NavRoutes.LOGIN
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.LOGIN // App 启动时首先进入登录页
+        startDestination = startDestination
     ) {
         composable(NavRoutes.LOGIN) {
-            // LoginScreen
+            LoginScreen(
+                onLoginClick = {
+                    navController.navigate(NavRoutes.DASHBOARD) {
+                        popUpTo(NavRoutes.LOGIN) { inclusive = true }
+                    }
+                },
+                onRegisterClick = {
+                    navController.navigate(NavRoutes.REGISTER)
+                }
+            )
         }
+
         composable(NavRoutes.REGISTER) {
-            //  RegisterScreen
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate(NavRoutes.DASHBOARD)
+                },
+                onBackToLogin = {
+                    navController.popBackStack()
+                }
+            )
         }
+
         composable(NavRoutes.DASHBOARD) {
-            // DashboardScreen
             DashboardScreen(
                 onNavigateToHistory = {
                     navController.navigate(NavRoutes.HISTORY)
                 }
             )
         }
+
         composable(NavRoutes.HISTORY) {
-            //  HistoryScreen
+            HistoryScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(NavRoutes.SETTINGS) {
+            SettingsScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
