@@ -23,7 +23,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -58,7 +57,7 @@ private val DarkText = Color(0xFF1C1B1F)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onBackClick: () -> Unit
+//    onBackClick: () -> Unit
 ) {
     var dailyReminderEnabled by remember { mutableStateOf(true) }
     var abnormalAlertEnabled by remember { mutableStateOf(true) }
@@ -87,11 +86,11 @@ fun SettingsScreen(
                         fontWeight = FontWeight.SemiBold
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Text("<", color = DarkText)
-                    }
-                }
+//                navigationIcon = {
+//                    IconButton(onClick = onBackClick) {
+//                        Text("<", color = DarkText)
+//                    }
+//                }
             )
         }
     ) { padding ->
@@ -323,55 +322,9 @@ private fun CardioGuardSettingsTextField(
 @Composable
 fun SettingsScreenPreview() {
     FIT5046A2Theme {
-        SettingsScreen(onBackClick = {})
+        SettingsScreen()
     }
 }
 
 
 
-
-//package com.example.fit5046a2.screens
-//
-//import androidx.compose.foundation.layout.*
-//import androidx.compose.material3.*
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.tooling.preview.Preview
-//import com.example.fit5046a2.ui.theme.FIT5046A2Theme
-//
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun SettingsScreen(
-//    onBackClick: () -> Unit
-//) {
-//    Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = { Text("Settings") },
-//                navigationIcon = {
-//                    IconButton(onClick = onBackClick) {
-//                        Text("<")
-//                    }
-//                }
-//            )
-//        }
-//    ) { padding ->
-//        Box(
-//            modifier = Modifier
-//                .padding(padding)
-//                .fillMaxSize(),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text("Settings Content")
-//        }
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun SettingsScreenPreview() {
-//    FIT5046A2Theme {
-//        SettingsScreen(onBackClick = {})
-//    }
-//}

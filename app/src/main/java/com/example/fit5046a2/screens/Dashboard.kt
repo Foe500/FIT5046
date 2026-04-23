@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +40,7 @@ fun DashboardScreen() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // --- 新增：顶部风险预警模块 ---
+            // RiskAlertCard
             item {
                 RiskAlertCard()
             }
@@ -60,7 +59,7 @@ fun DashboardScreen() {
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
 
                 ) {
-                    // 左上：日历
+                    // Top left: Calendar
                     Card(
                         modifier = cardModifier.weight(1f).wrapContentHeight(),
                         shape = RoundedCornerShape(20.dp),
@@ -74,7 +73,6 @@ fun DashboardScreen() {
                             Text("Calendar", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = DarkText)
                             Text("Jul 2026", fontSize = 14.sp, color = LightGrayText)
 
-                            // 日期（压缩版）
                             val days = listOf(
                                 listOf("", "", "", "1", "2", "3", "4"),
                                 listOf("5", "6", "7", "8", "9", "10", "11"),
@@ -106,7 +104,7 @@ fun DashboardScreen() {
                         }
                     }
 
-                    // 右上：用户信息
+                    // Top right: General Info
                     Card(
                         modifier = cardModifier.weight(1f).aspectRatio(1f),
                         shape = RoundedCornerShape(20.dp),
@@ -142,7 +140,7 @@ fun DashboardScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // 左下：心率
+                    // Lower left: Heart rate
                     Card(
                         modifier = cardModifier.weight(1f).aspectRatio(1f),
                         shape = RoundedCornerShape(20.dp),
@@ -169,7 +167,7 @@ fun DashboardScreen() {
                         }
                     }
 
-                    // 右下：血压
+                    // Bottom right: Blood pressure
                     Card(
                         modifier = cardModifier.weight(1f).aspectRatio(1f),
                         shape = RoundedCornerShape(20.dp),
@@ -201,16 +199,12 @@ fun DashboardScreen() {
     }
 }
 
-/**
- * 风险预警卡片组件
- * 显示近7天风险等级及健康提示
- */
 @Composable
 fun RiskAlertCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp), // 固定高度，使其比下方卡片更宽大
+            .height(140.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
@@ -229,7 +223,7 @@ fun RiskAlertCard() {
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // 头部：标题与风险等级
+                // head
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -243,14 +237,14 @@ fun RiskAlertCard() {
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = "Moderate Risk", // 动态风险等级
+                            text = "Moderate Risk", // Dynamic risk level
                             fontSize = 22.sp,
                             color = PrimaryRed,
                             fontWeight = FontWeight.Bold
                         )
                     }
 
-                    // 简单的7天指示器模拟
+                    // simulation of 7 days
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         repeat(7) { index ->
                             Box(
@@ -265,7 +259,6 @@ fun RiskAlertCard() {
                     }
                 }
 
-                // 底部：智能提示语
                 Surface(
                     color = Color.White,
                     shape = RoundedCornerShape(12.dp),
@@ -286,7 +279,7 @@ fun RiskAlertCard() {
                                 color = DarkText
                             )
                             Text(
-                                text = "Temp drop detected. BP may rise. Keep warm.", // 动态提示语
+                                text = "Temp drop detected. BP may rise. Keep warm.",
                                 fontSize = 12.sp,
                                 color = LightGrayText
                             )

@@ -24,16 +24,11 @@ fun BottomNavGraph(
         }
 
         composable(NavRoutes.HISTORY) {
-            HistoryScreen(
-                onBackClick = {}
-            )
+            HistoryScreen()
         }
 
         composable(NavRoutes.SETTINGS) {
-            SettingsScreen(
-                onBackClick = {}
-            )
+            SettingsScreen()
         }
     }
 }
-
