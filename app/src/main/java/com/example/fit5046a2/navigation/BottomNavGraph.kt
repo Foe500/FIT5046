@@ -2,6 +2,7 @@ package com.example.fit5046a2.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,9 +24,9 @@ fun BottomNavGraph(
 
         composable(NavRoutes.DASHBOARD) {
             DashboardScreen(
-                onNavigateToHistory = {
-                    navController.navigate(NavRoutes.HISTORY)
-                }
+//                onNavigateToHistory = {
+//                    navController.navigate(NavRoutes.HISTORY)
+//                }
             )
         }
 
@@ -46,3 +47,4 @@ fun BottomNavGraph(
         }
     }
 }
+
