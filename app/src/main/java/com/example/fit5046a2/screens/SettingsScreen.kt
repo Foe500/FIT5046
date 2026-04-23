@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import com.example.fit5046a2.ui.theme.FIT5046A2Theme
 
 private val PrimaryRed = Color(0xFFC62828)
-private val AccentRed = Color(0xFFDC6A6A)
+private val MidRed = Color(0xFFD24A4A)
 private val LightRed = Color(0xFFEF9A9A)
 private val SoftGray = Color(0xFFF8F9FB)
 private val DarkText = Color(0xFF1C1B1F)
@@ -116,7 +116,7 @@ fun SettingsScreen(
                     .padding(horizontal = 20.dp),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -154,6 +154,7 @@ fun SettingsScreen(
                             }
                         }
 
+
                         DropdownMenu(
                             expanded = timeMenuExpanded,
                             onDismissRequest = { timeMenuExpanded = false }
@@ -187,7 +188,7 @@ fun SettingsScreen(
                             onCheckedChange = { dailyReminderEnabled = it },
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = Color.White,
-                                checkedTrackColor = AccentRed,
+                                checkedTrackColor = MidRed,
                                 uncheckedThumbColor = Color.White,
                                 uncheckedTrackColor = Color(0xFFD6D6D6)
                             )
@@ -241,14 +242,14 @@ fun SettingsScreen(
                             onCheckedChange = { abnormalAlertEnabled = it },
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = Color.White,
-                                checkedTrackColor = AccentRed,
+                                checkedTrackColor = MidRed,
                                 uncheckedThumbColor = Color.White,
                                 uncheckedTrackColor = Color(0xFFD6D6D6)
                             )
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
                         onClick = { },
@@ -266,7 +267,7 @@ fun SettingsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
