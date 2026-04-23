@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fit5046a2.navigation.BottomNavGraph
 import com.example.fit5046a2.navigation.BottomNavigationBar
 import com.example.fit5046a2.navigation.CardioGuardNavGraph
+import com.example.fit5046a2.screens.MainScreen
 import com.example.fit5046a2.ui.theme.FIT5046A2Theme
 
 class MainActivity : ComponentActivity() {
@@ -35,23 +36,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController)
-        }
-    ) { innerPadding ->
-        BottomNavGraph(
-            navController = navController,
-            modifier = Modifier.padding(innerPadding)
-        )
-    }
-}
 
 
 @Preview(showBackground = true)
