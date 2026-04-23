@@ -14,19 +14,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -48,26 +47,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fit5046a2.ui.theme.FIT5046A2Theme
 
-private val PrimaryRed = Color(0xFFC62828)
+private val PrimaryRed = Color(0xFFD32F2F)
 private val SoftRed = Color(0xFFFFEBEE)
 private val DarkText = Color(0xFF1C1B1F)
+private val FieldBorder = Color(0xFFBDBDBD)
 private val ErrorRed = Color(0xFFD32F2F)
+private val HelperTextColor = Color(0xFF777777)
 
 @Composable
 fun RegisterScreen(
-    onBackToLogin: () -> Unit = {},
-    onRegisterSuccess: () -> Unit = {}
+    onRegisterSuccess: () -> Unit = {},
+    onBackToLogin: () -> Unit = {}
 ) {
     var age by rememberSaveable { mutableStateOf("") }
     var weight by rememberSaveable { mutableStateOf("") }
     var emergencyContact by rememberSaveable { mutableStateOf("") }
     var selectedCondition by rememberSaveable { mutableStateOf("") }
     var dropdownExpanded by remember { mutableStateOf(false) }
-
-    var ageTouched by remember { mutableStateOf(false) }
-    var weightTouched by remember { mutableStateOf(false) }
-    var contactTouched by remember { mutableStateOf(false) }
 
     val medicalConditions = listOf(
         "Hypertension",
@@ -76,36 +74,6 @@ fun RegisterScreen(
         "Arrhythmia",
         "None"
     )
-
-    val ageError = when {
-        !ageTouched -> null
-        age.isBlank() -> "Age is required"
-        age.toIntOrNull() == null -> "Enter a valid number"
-        age.toInt() !in 40..65 -> "Recommended target group: 40-65"
-        else -> null
-    }
-
-    val weightError = when {
-        !weightTouched -> null
-        weight.isBlank() -> "Weight is required"
-        weight.toDoubleOrNull() == null -> "Enter a valid weight"
-        else -> null
-    }
-
-    val contactError = when {
-        !contactTouched -> null
-        emergencyContact.isBlank() -> "Emergency contact is required"
-        emergencyContact.length < 8 -> "Contact number is too short"
-        else -> null
-    }
-
-    val formValid = ageError == null &&
-            weightError == null &&
-            contactError == null &&
-            age.isNotBlank() &&
-            weight.isNotBlank() &&
-            emergencyContact.isNotBlank() &&
-            selectedCondition.isNotBlank()
 
     Scaffold(
         containerColor = Color(0xFFF8F9FB)
@@ -176,13 +144,9 @@ fun RegisterScreen(
                     AppTextField(
                         label = "Age *",
                         value = age,
-                        onValueChange = {
-                            age = it.filter { ch -> ch.isDigit() }
-                            ageTouched = true
-                        },
+                        onValueChange = { age = it },
                         placeholder = "Enter your age",
-                        keyboardType = KeyboardType.Number,
-                        errorText = ageError
+                        keyboardType = KeyboardType.Number
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -190,13 +154,9 @@ fun RegisterScreen(
                     AppTextField(
                         label = "Weight (kg) *",
                         value = weight,
-                        onValueChange = {
-                            weight = it.filter { ch -> ch.isDigit() || ch == '.' }
-                            weightTouched = true
-                        },
+                        onValueChange = { weight = it },
                         placeholder = "Enter your weight",
-                        keyboardType = KeyboardType.Decimal,
-                        errorText = weightError
+                        keyboardType = KeyboardType.Decimal
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -204,17 +164,13 @@ fun RegisterScreen(
                     AppTextField(
                         label = "Emergency Contact *",
                         value = emergencyContact,
-                        onValueChange = {
-                            emergencyContact = it
-                            contactTouched = true
-                        },
+                        onValueChange = { emergencyContact = it },
                         placeholder = "Phone number",
-                        keyboardType = KeyboardType.Phone,
-                        errorText = contactError
+                        keyboardType = KeyboardType.Phone
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
-                    Divider()
+                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(16.dp))
 
                     SectionTitle("Medical History")
@@ -228,15 +184,19 @@ fun RegisterScreen(
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    Box {
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         OutlinedTextField(
                             value = selectedCondition,
                             onValueChange = {},
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { dropdownExpanded = true },
+                            modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            placeholder = { Text("Select a condition") },
+                            enabled = false,
+                            singleLine = true,
+                            placeholder = {
+                                Text("Select a condition")
+                            },
                             trailingIcon = {
                                 Icon(
                                     imageVector = Icons.Default.ArrowDropDown,
@@ -244,12 +204,25 @@ fun RegisterScreen(
                                 )
                             },
                             shape = RoundedCornerShape(14.dp),
-                            colors = OutlinedTextFieldDefaults.colors()
+                            colors = OutlinedTextFieldDefaults.colors(
+                                disabledBorderColor = FieldBorder,
+                                disabledTextColor = DarkText,
+                                disabledPlaceholderColor = Color.Gray,
+                                disabledTrailingIconColor = DarkText
+                            )
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable { dropdownExpanded = true }
                         )
 
                         DropdownMenu(
                             expanded = dropdownExpanded,
-                            onDismissRequest = { dropdownExpanded = false }
+                            onDismissRequest = { dropdownExpanded = false },
+                            modifier = Modifier.fillMaxWidth(0.9f)
                         ) {
                             medicalConditions.forEach { item ->
                                 DropdownMenuItem(
@@ -263,14 +236,12 @@ fun RegisterScreen(
                         }
                     }
 
-                    if (selectedCondition.isBlank()) {
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = "Please select one condition",
-                            color = ErrorRed,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Select one existing medical condition",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = HelperTextColor
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -290,13 +261,10 @@ fun RegisterScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(52.dp),
-                            enabled = true,
                             shape = RoundedCornerShape(18.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = PrimaryRed,
-                                contentColor = Color.White,
-                                disabledContainerColor = Color(0xFFEF9A9A),
-                                disabledContentColor = Color.White
+                                contentColor = Color.White
                             )
                         ) {
                             Text(
@@ -304,38 +272,6 @@ fun RegisterScreen(
                                 fontWeight = FontWeight.SemiBold
                             )
                         }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = SoftRed)
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                        tint = PrimaryRed
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-                        Text(
-                            text = "Design notes used here",
-                            fontWeight = FontWeight.Bold,
-                            color = PrimaryRed
-                        )
-                        Text(
-                            text = "• Labels are placed above each field\n• Required fields use an asterisk (*)\n• Inline validation appears below the field",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = DarkText
-                        )
                     }
                 }
             }
@@ -350,7 +286,8 @@ fun SectionTitle(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        color = DarkText
     )
     Spacer(modifier = Modifier.height(12.dp))
 }
@@ -361,8 +298,7 @@ fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
-    keyboardType: KeyboardType,
-    errorText: String?
+    keyboardType: KeyboardType
 ) {
     Column {
         Text(
@@ -380,27 +316,21 @@ fun AppTextField(
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             placeholder = { Text(placeholder) },
-            isError = errorText != null,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-            shape = RoundedCornerShape(18.dp),
-            colors = OutlinedTextFieldDefaults.colors()
-        )
-
-        if (errorText != null) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = errorText,
-                color = ErrorRed,
-                style = MaterialTheme.typography.bodySmall
+            shape = RoundedCornerShape(14.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryRed,
+                unfocusedBorderColor = FieldBorder,
+                errorBorderColor = ErrorRed
             )
-        }
+        )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreenPreview() {
-    MaterialTheme {
+    FIT5046A2Theme {
         RegisterScreen()
     }
 }
