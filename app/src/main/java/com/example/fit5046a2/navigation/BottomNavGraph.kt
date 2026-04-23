@@ -41,7 +41,8 @@ fun BottomNavGraph(
         composable(NavRoutes.SETTINGS) {
             SettingsScreen(
                 onBackClick = {
-                    navController.popBackStack()
+//                    navController.popBackStack()
+                    navController.navigate(NavRoutes.DASHBOARD)
                 }
             )
         }
