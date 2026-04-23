@@ -11,18 +11,18 @@ import com.example.fit5046a2.ui.theme.FIT5046A2Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
-    onBackClick: () -> Unit
+//    onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("History") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Text("<")
-                    }
-                }
-            )
+//            TopAppBar(
+//                title = { Text("History") },
+//                navigationIcon = {
+//                    IconButton(onClick = onBackClick) {
+//                        Text("<")
+//                    }
+//                }
+//            )
         }
     ) { padding ->
         Box(
@@ -40,6 +40,6 @@ fun HistoryScreen(
 @Composable
 fun HistoryScreenPreview() {
     FIT5046A2Theme {
-        HistoryScreen(onBackClick = {})
+        HistoryScreen()
     }
 }
