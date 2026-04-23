@@ -9,7 +9,9 @@ import com.example.fit5046a2.navigation.BottomNavigationBar
 import com.example.fit5046a2.navigation.BottomNavGraph
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onLogoutClick: () -> Unit
+) {
     val bottomNavController = rememberNavController()
 
     Scaffold(
@@ -19,7 +21,8 @@ fun MainScreen() {
     ) { innerPadding ->
         BottomNavGraph(
             navController = bottomNavController,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            onLogoutClick = onLogoutClick
         )
     }
 }

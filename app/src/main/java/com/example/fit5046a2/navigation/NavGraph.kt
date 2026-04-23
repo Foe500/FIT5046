@@ -45,7 +45,13 @@ fun CardioGuardNavGraph(
         }
 
         composable(NavRoutes.DASHBOARD) {
-            MainScreen()
+            MainScreen(
+                onLogoutClick = {
+                    navController.navigate(NavRoutes.LOGIN) {
+                        popUpTo(0)
+                    }
+                }
+            )
         }
     }
 }

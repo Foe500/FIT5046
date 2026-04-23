@@ -37,6 +37,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     FIT5046A2Theme {
-        MainScreen()
+        MainScreen(
+            onLogoutClick = {}
+        )
     }
 }

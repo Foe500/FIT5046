@@ -12,7 +12,8 @@ import com.example.fit5046a2.screens.SettingsScreen
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onLogoutClick: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -28,7 +29,9 @@ fun BottomNavGraph(
         }
 
         composable(NavRoutes.SETTINGS) {
-            SettingsScreen()
+            SettingsScreen(
+                onLogoutClick = onLogoutClick
+            )
         }
     }
 }
