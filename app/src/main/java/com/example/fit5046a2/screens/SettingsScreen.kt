@@ -107,16 +107,17 @@ fun SettingsScreen(
                 lineHeight = 18.sp,
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
-                    .padding(top = 4.dp, bottom = 16.dp)
+                    .padding(top = 2.dp, bottom = 12.dp)
             )
 
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 100.dp),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -171,7 +172,7 @@ fun SettingsScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -205,7 +206,7 @@ fun SettingsScreen(
                         color = Color(0xFF666666)
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     CardioGuardSettingsTextField(
                         label = "Min normal heart rate (BPM)",
@@ -215,7 +216,7 @@ fun SettingsScreen(
                         enabled = abnormalAlertEnabled
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     CardioGuardSettingsTextField(
                         label = "Max normal heart rate (BPM)",
@@ -225,7 +226,7 @@ fun SettingsScreen(
                         enabled = abnormalAlertEnabled
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -249,7 +250,7 @@ fun SettingsScreen(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     Button(
                         onClick = { },
@@ -267,7 +268,7 @@ fun SettingsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
