@@ -35,10 +35,12 @@ fun CardioGuardNavGraph(
             )
         }
 
-        composable(NavRoutes.REGISTER) {
+        composable(route = NavRoutes.REGISTER) {
             RegisterScreen(
                 onRegisterSuccess = {
-                    navController.navigate(NavRoutes.DASHBOARD)
+                    navController.navigate(NavRoutes.DASHBOARD) {
+                        popUpTo(NavRoutes.REGISTER) { inclusive = true }
+                    }
                 },
                 onBackToLogin = {
                     navController.popBackStack()
