@@ -73,7 +73,6 @@ data class HistoryRecord(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
-    onBackClick: () -> Unit = {}
 ) {
     var searchText by rememberSaveable { mutableStateOf("") }
     var selectedFilter by rememberSaveable { mutableStateOf("All") }

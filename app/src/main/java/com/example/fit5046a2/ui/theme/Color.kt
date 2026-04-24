@@ -10,11 +10,9 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// 主色调：医疗蓝
-val PrimaryBlue = Color(0xFF0288D1)
-val PrimaryBlueLight = Color(0xFF81D4FA)
-val PrimaryBlueDark = Color(0xFF01579B)
-
-// 辅助色：警示橙，用于警告和错误状态
-val WarningOrange = Color(0xFFFF9800)
-val WarningOrangeLight = Color(0xFFFFCC80)
+//val PrimaryBlue = Color(0xFF0288D1)
+//val PrimaryBlueLight = Color(0xFF81D4FA)
+//val PrimaryBlueDark = Color(0xFF01579B)
+//
+//val WarningOrange = Color(0xFFFF9800)
+//val WarningOrangeLight = Color(0xFFFFCC80)
