@@ -1,19 +1,35 @@
 package com.example.fit5046a2.screens
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fit5046a2.data.HeartRateCsvReader
+import com.example.fit5046a2.data.HeartRateSample
+import com.example.fit5046a2.data.RiskAnalyzer
+import com.example.fit5046a2.data.RiskLevel
+import com.example.fit5046a2.data.RiskResult
+import kotlinx.coroutines.delay
 
 private val PrimaryRed = Color(0xFFC62828)
 private val SoftRed = Color(0xFFFFEBEE)
@@ -26,6 +42,30 @@ private val BpBg = Color(0xFFE3F2FD)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen() {
+    val context = LocalContext.current
+    val heartRateSamples = remember {
+        HeartRateCsvReader(context).readSamples()
+    }
+    val currentHeartRateIndex = remember { mutableIntStateOf(0) }
+    val currentHeartRate = heartRateSamples.getOrNull(currentHeartRateIndex.intValue)
+        ?: HeartRateSample(time = "08:00", bpm = 112, activity = "Resting")
+    val riskResult = RiskAnalyzer.analyze(currentHeartRate)
+    val recentHeartRates = remember { mutableStateListOf<HeartRateSample>() }
+
+    LaunchedEffect(heartRateSamples) {
+        if (heartRateSamples.isEmpty()) return@LaunchedEffect
+
+        while (true) {
+            delay(1000)
+            currentHeartRateIndex.intValue =
+                (currentHeartRateIndex.intValue + 1) % heartRateSamples.size
+            recentHeartRates.add(heartRateSamples[currentHeartRateIndex.intValue])
+            if (recentHeartRates.size > 10) {
+                recentHeartRates.removeAt(0)
+            }
+        }
+    }
+
     val cardModifier = Modifier
         .fillMaxWidth()
         .background(CardBackground, shape = RoundedCornerShape(20.dp))
@@ -42,7 +82,7 @@ fun DashboardScreen() {
         ) {
             // RiskAlertCard
             item {
-                RiskAlertCard()
+                RiskAlertCard(riskResult = riskResult)
             }
 
             item {
@@ -153,7 +193,7 @@ fun DashboardScreen() {
                             horizontalAlignment = Alignment.Start
                         ) {
                             Text("Heart Rate", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = DarkText)
-                            Text("112 bpm", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = PrimaryRed)
+                            Text("${currentHeartRate.bpm} bpm", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = PrimaryRed)
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -162,7 +202,7 @@ fun DashboardScreen() {
                                     .padding(8.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("📈 Waveform", fontSize = 12.sp, color = PrimaryRed)
+                                HeartRateMiniChart(samples = recentHeartRates)
                             }
                         }
                     }
@@ -200,7 +240,13 @@ fun DashboardScreen() {
 }
 
 @Composable
-fun RiskAlertCard() {
+fun RiskAlertCard(riskResult: RiskResult) {
+    val riskColor = when (riskResult.level) {
+        RiskLevel.NORMAL -> Color(0xFF2E7D32)
+        RiskLevel.MODERATE -> Color(0xFFE67E22)
+        RiskLevel.CRITICAL -> PrimaryRed
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -237,9 +283,9 @@ fun RiskAlertCard() {
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = "Moderate Risk", // Dynamic risk level
+                            text = riskResult.title,
                             fontSize = 22.sp,
-                            color = PrimaryRed,
+                            color = riskColor,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -251,7 +297,7 @@ fun RiskAlertCard() {
                                 modifier = Modifier
                                     .size(8.dp)
                                     .background(
-                                        color = if (index == 5) PrimaryRed else Color.Gray.copy(alpha = 0.3f),
+                                        color = if (index == 5) riskColor else Color.Gray.copy(alpha = 0.3f),
                                         shape = RoundedCornerShape(4.dp)
                                     )
                             )
@@ -279,7 +325,7 @@ fun RiskAlertCard() {
                                 color = DarkText
                             )
                             Text(
-                                text = "Temp drop detected. BP may rise. Keep warm.",
+                                text = riskResult.message,
                                 fontSize = 12.sp,
                                 color = LightGrayText
                             )
@@ -287,6 +333,50 @@ fun RiskAlertCard() {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun HeartRateMiniChart(samples: List<HeartRateSample>) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        if (samples.size < 2) return@Canvas
+
+        val minBpm = 60
+        val maxBpm = 140
+        val horizontalStep = size.width / samples.lastIndex.coerceAtLeast(1)
+        val path = Path()
+
+        samples.forEachIndexed { index, sample ->
+            val x = index * horizontalStep
+            val normalizedBpm = ((sample.bpm - minBpm).toFloat() / (maxBpm - minBpm))
+                .coerceIn(0f, 1f)
+            val y = size.height - normalizedBpm * size.height
+
+            if (index == 0) {
+                path.moveTo(x, y)
+            } else {
+                path.lineTo(x, y)
+            }
+        }
+
+        drawPath(
+            path = path,
+            color = PrimaryRed,
+            style = Stroke(width = 4f, cap = StrokeCap.Round)
+        )
+
+        samples.forEachIndexed { index, sample ->
+            val x = index * horizontalStep
+            val normalizedBpm = ((sample.bpm - minBpm).toFloat() / (maxBpm - minBpm))
+                .coerceIn(0f, 1f)
+            val y = size.height - normalizedBpm * size.height
+
+            drawCircle(
+                color = PrimaryRed,
+                radius = 4f,
+                center = Offset(x, y)
+            )
         }
     }
 }

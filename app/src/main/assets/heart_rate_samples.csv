@@ -1,0 +1,16 @@
+time,bpm,activity
+08:00,72,Resting
+08:01,74,Resting
+08:02,78,Walking
+08:03,84,Walking
+08:04,92,Walking
+08:05,105,Exercise
+08:06,116,Exercise
+08:07,126,Exercise
+08:08,118,Recovery
+08:09,96,Recovery
+08:10,86,Resting
+08:11,132,Resting
+08:12,128,Resting
+08:13,90,Walking
+08:14,80,Resting
